@@ -103,8 +103,8 @@ class ID3DecisionTreeClassifier :
         return root
 
     # ID3 algorithm
-    def ID3(self, samples, target_attribute, attributes2, target_modified):
-        att_temp = attributes2.copy()
+    def ID3(self, samples, target_attribute, mod_attributes, target_modified):
+        att_temp = mod_attributes.copy()
         node = self.new_ID3_node()
         c = self.classCount(target_modified)
 
@@ -114,7 +114,7 @@ class ID3DecisionTreeClassifier :
             node['classCounts'] = c
             return node
 
-        if not attributes2:
+        if not mod_attributes:
             c = self.classCount(list(target_modified))
             node["label"] = max(c.items(), key = operator.itemgetter(1))[0]
             node["entropy"] = self.firstI(target_modified)
@@ -122,7 +122,7 @@ class ID3DecisionTreeClassifier :
             node['classCounts'] = c
             return node
         else:
-            A, entropy = self.find_split_attr(samples, target_modified, attributes2)
+            A, entropy = self.find_split_attr(samples, target_modified, mod_attributes)
             att_temp.pop(A, None)
             node["attribute"] = A
             node["entropy"] = entropy
